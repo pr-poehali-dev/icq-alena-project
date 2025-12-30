@@ -442,8 +442,11 @@ const Index = () => {
           <h3 className="font-medium mb-4">Уведомления</h3>
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <Label className="font-normal">Звук уведомлений</Label>
-              <Switch defaultChecked />
+              <div>
+                <Label className="font-normal">Звук уведомлений</Label>
+                <p className="text-sm text-muted-foreground">Воспроизводить звук при получении сообщений</p>
+              </div>
+              <Switch checked={soundEnabled} onCheckedChange={setSoundEnabled} />
             </div>
             
             <Separator />
