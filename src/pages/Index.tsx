@@ -30,6 +30,46 @@ const Index = () => {
   const [isAnonymous, setIsAnonymous] = useState(false);
   const [messageText, setMessageText] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
+  const [soundEnabled, setSoundEnabled] = useState(true);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  useEffect(() => {
+    audioRef.current = new Audio('data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBjWJ0fPTgjMGHm7A7+OZSA0PVqzn77BfGAg+ltryxHUpBSh+zPLaizsIGGS57OihUBELTKXh8bllHAU2jdXzzn0vBSF1xu/glEILElyx6OyrWBUIQ5zd8sFuJAU7iM/z1YU1Bx5qvu7mnEoODlOq5O+1YhsGO5PY88p8LQUme8rx3I4+ChVbuOnurVoXCEKc3fK/bSMFPIjO89SGNQcfar/u5p1KDw5Squbvt2IdBjuR2PPKfS0FJnrK8d2PQAoVW7np761aFwhCnN3yv24kBTyJzvPVhzUHH2u/7+edSw8OUqrm77hjHQY8k9jzyX4tBSZ7y/HejkAJFVy56e+tWhcIQpzd8r9uJAU8ic3z1Yc1Bx9rv+7mnUwPDlGs5e+4Yx0GPJLa88l/LwUmfcrx3Y5AChVcuunvrVoXB0Gc3fK/byQFPYrO89WHNQcebr/u551MDw5RrOXvuGQdBjyS2vPJfy4FJn3L8dyOQAoUXLvp77BbFwdCnN3yv28kBT2KzvPVhzUHHm+/7uedTQ8OUq3l77llHQY8lNrzyoAvBSZ+y/HcjkAKFV272++vWxYHQpze8r5xIwU9i8/y1Ic1Bx5xwO7nnkwPDlOt5e+4ZR0FPJXZ88qBLwUnfsvy3I9AChZcvejwrl4XCEKf3/K+cSQFPozP8tSINQceb8Hu5p5KDw1Rr+XwuWQdBTyW2fPLgzAFKH7M8+COPwoWXL7o8K5gGAc/n+DyuHMjBT+OzvPUhzcHHm/C7eSfTA4NUbDl8LhnHQY9ltzzyn8uBSh/zfPgjj8JFl++6PCvYRcIPKDg8rh0IwU/j87y04k3Bx5uxO3kn0sPDVGw5vC4Zx0FPJfb88qBMQUogM/z3Y4/CRVfvunxsWMXCDyg4PK4dSIFQI/N8tKKNQcdb8Tt45xKDwxPsODvuGkeATuW2fPJgi8GKIHQ8dyMPgkUX7/p8bFkFgg8oeHyuHYiBUCPzvLTiTYHHm7E7eSeTQ8NUrHm8LhoHgU8mNnzyoMxBSiB0PPcjT4KFF/A6fCxZRYIPKLi8rh3IgVAkM7y04k2Bx5uxe3kn04PDVKy5fC5aB0FPJnZ88p/MAUohNDz3I4+ChRfwenxsWUWCDyj4vK4eSIFQJDO8tOJNgceb8bt5J9ODw1TsubwuWkdBTya2fPKgDAFKIPR89yOPgoUYMDp8a9mFgg9o+LyuHkiBUCQzvLTiTYHHm/G7uSfTg8NU7Lm8LlpHQU8mtnzyoEwBSiE0PPcjz8KFGDBqvCwZhUIQKPi8rh6IQVAkc7y04k2Bx9wxO3kn04ODVSy5/C5aRwGPJvY88qBMAUpiNPz3I4+ChVgwqrwr2YVCECk4vK5eiEFQJHO8tOJNgcecMXt5J9ODg1Us+fwuWkbBj2b2PPKgC8FKYvT89yOPgoWYMOq8K5lFQhApeLyuXshBUCRzvLTiTYHHnHF7uSfTg4NVLPo8LlqGwY9m9jzyn8vBSmN0/Pcjz4KFmDDq++uZRUHQaXi8rp8IAVB');
+  }, []);
+
+  const playNotificationSound = () => {
+    if (soundEnabled && audioRef.current) {
+      audioRef.current.currentTime = 0;
+      audioRef.current.play().catch(() => {});
+    }
+  };
+
+  useEffect(() => {
+    const simulateIncomingMessage = () => {
+      if (Math.random() > 0.7 && selectedContact) {
+        const incomingTexts = [
+          'Привет! Есть минутка?',
+          'Спасибо за помощь!',
+          'Отправил файлы',
+          'Когда встретимся?',
+          'Понял, спасибо!',
+        ];
+        
+        const newMessage: Message = {
+          id: Date.now(),
+          text: incomingTexts[Math.floor(Math.random() * incomingTexts.length)],
+          sender: 'other',
+          time: new Date().toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' }),
+        };
+        
+        setMessages(prev => [...prev, newMessage]);
+        playNotificationSound();
+      }
+    };
+
+    const interval = setInterval(simulateIncomingMessage, 15000);
+    return () => clearInterval(interval);
+  }, [selectedContact, soundEnabled]);
 
   const [contacts] = useState<Contact[]>([
     { id: 1, name: 'Анна Петрова', status: 'online', lastMessage: 'Привет! Как дела?', unread: 2 },
@@ -56,6 +96,9 @@ const Index = () => {
       };
       setMessages([...messages, newMessage]);
       setMessageText('');
+      
+      const sendSound = new Audio('data:audio/wav;base64,UklGRhIAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0Ya4AAAD/////AAAAAAAAAAD/////AAAAAP////8AAAAA');
+      sendSound.play().catch(() => {});
     }
   };
 
