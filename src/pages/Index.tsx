@@ -66,15 +66,15 @@ const Index = () => {
   const currentContact = contacts.find(c => c.id === selectedContact);
 
   const renderSidebar = () => (
-    <div className="w-20 bg-sidebar flex flex-col items-center py-6 space-y-6">
-      <div className="text-primary font-bold text-2xl">AN</div>
+    <div className="w-20 bg-sidebar flex flex-col items-center py-6 space-y-6 animate-fade-in-left">
+      <div className="text-primary font-bold text-2xl animate-scale-in">AN</div>
       <Separator className="w-12 bg-sidebar-border" />
       
       <nav className="flex flex-col space-y-4">
         <Button
           variant={activeSection === 'messenger' ? 'default' : 'ghost'}
           size="icon"
-          className="rounded-lg"
+          className="rounded-lg transition-all duration-300 hover:scale-110"
           onClick={() => setActiveSection('messenger')}
         >
           <Icon name="MessageSquare" size={20} />
@@ -83,7 +83,7 @@ const Index = () => {
         <Button
           variant={activeSection === 'contacts' ? 'default' : 'ghost'}
           size="icon"
-          className="rounded-lg"
+          className="rounded-lg transition-all duration-300 hover:scale-110"
           onClick={() => setActiveSection('contacts')}
         >
           <Icon name="Users" size={20} />
@@ -92,7 +92,7 @@ const Index = () => {
         <Button
           variant={activeSection === 'profile' ? 'default' : 'ghost'}
           size="icon"
-          className="rounded-lg"
+          className="rounded-lg transition-all duration-300 hover:scale-110"
           onClick={() => setActiveSection('profile')}
         >
           <Icon name="User" size={20} />
@@ -101,7 +101,7 @@ const Index = () => {
         <Button
           variant={activeSection === 'settings' ? 'default' : 'ghost'}
           size="icon"
-          className="rounded-lg"
+          className="rounded-lg transition-all duration-300 hover:scale-110"
           onClick={() => setActiveSection('settings')}
         >
           <Icon name="Settings" size={20} />
@@ -113,7 +113,7 @@ const Index = () => {
       <Button
         variant={activeSection === 'about' ? 'default' : 'ghost'}
         size="icon"
-        className="rounded-lg"
+        className="rounded-lg transition-all duration-300 hover:scale-110"
         onClick={() => setActiveSection('about')}
       >
         <Icon name="Info" size={20} />
@@ -122,7 +122,7 @@ const Index = () => {
   );
 
   const renderContactsList = () => (
-    <div className="w-80 border-r border-border bg-card flex flex-col">
+    <div className="w-80 border-r border-border bg-card flex flex-col animate-fade-in">
       <div className="p-4 border-b border-border">
         <div className="relative">
           <Icon name="Search" size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
@@ -141,7 +141,7 @@ const Index = () => {
             <button
               key={contact.id}
               onClick={() => setSelectedContact(contact.id)}
-              className={`w-full p-3 rounded-lg mb-1 flex items-center space-x-3 transition-colors ${
+              className={`w-full p-3 rounded-lg mb-1 flex items-center space-x-3 transition-all duration-200 hover:translate-x-1 ${
                 selectedContact === contact.id
                   ? 'bg-accent text-accent-foreground'
                   : 'hover:bg-secondary'
@@ -218,10 +218,10 @@ const Index = () => {
                 {messages.map((message) => (
                   <div
                     key={message.id}
-                    className={`flex ${message.sender === 'me' ? 'justify-end' : 'justify-start'}`}
+                    className={`flex animate-fade-in ${message.sender === 'me' ? 'justify-end' : 'justify-start'}`}
                   >
                     <div
-                      className={`max-w-md px-4 py-2 rounded-2xl ${
+                      className={`max-w-md px-4 py-2 rounded-2xl transition-all duration-200 hover:scale-105 ${
                         message.sender === 'me'
                           ? message.isAnonymous
                             ? 'bg-muted text-foreground'
@@ -291,11 +291,11 @@ const Index = () => {
   );
 
   const renderContacts = () => (
-    <div className="flex-1 p-8">
+    <div className="flex-1 p-8 animate-fade-in">
       <h1 className="text-3xl font-bold mb-6">Контакты</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {contacts.map((contact) => (
-          <div key={contact.id} className="p-4 rounded-lg border border-border bg-card hover:shadow-md transition-shadow">
+          <div key={contact.id} className="p-4 rounded-lg border border-border bg-card hover:shadow-md transition-all duration-300 hover:scale-105 animate-scale-in">
             <div className="flex items-center space-x-3 mb-3">
               <Avatar className="w-12 h-12">
                 <AvatarFallback className="bg-primary text-primary-foreground text-lg">
@@ -327,7 +327,7 @@ const Index = () => {
   );
 
   const renderProfile = () => (
-    <div className="flex-1 p-8 max-w-2xl mx-auto">
+    <div className="flex-1 p-8 max-w-2xl mx-auto animate-fade-in">
       <h1 className="text-3xl font-bold mb-6">Профиль</h1>
       <div className="bg-card border border-border rounded-lg p-6">
         <div className="flex items-center space-x-6 mb-6">
@@ -369,7 +369,7 @@ const Index = () => {
   );
 
   const renderSettings = () => (
-    <div className="flex-1 p-8 max-w-2xl mx-auto">
+    <div className="flex-1 p-8 max-w-2xl mx-auto animate-fade-in">
       <h1 className="text-3xl font-bold mb-6">Настройки</h1>
       <div className="space-y-4">
         <div className="bg-card border border-border rounded-lg p-6">
@@ -424,7 +424,7 @@ const Index = () => {
   );
 
   const renderAbout = () => (
-    <div className="flex-1 p-8 max-w-2xl mx-auto">
+    <div className="flex-1 p-8 max-w-2xl mx-auto animate-fade-in">
       <div className="text-center mb-8">
         <div className="text-6xl font-bold text-primary mb-4">AleNA</div>
         <p className="text-muted-foreground">Версия 1.0.0</p>
